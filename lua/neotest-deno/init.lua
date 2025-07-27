@@ -88,7 +88,6 @@ end
 ---@return neotest.Tree | nil
 function DenoNeotestAdapter.discover_positions(file_path)
 
-	-- TODO: discover flat tests
 	local query = [[
 ;; Deno.test
 (call_expression
@@ -103,6 +102,20 @@ function DenoNeotestAdapter.discover_positions(file_path)
 		(arguments ((string) @test.name . (object) . (arrow_function)))
 		(arguments (object) . (function name: (identifier) @test.name))
 	]
+) @test.definition
+
+;; Deno test steps - nested tests using t.step()
+(await_expression
+	argument: (call_expression
+		function: (member_expression
+			object: (identifier) @t_param
+			property: (property_identifier) @step_method (#match? @step_method "^step$")
+		) @func_name
+		arguments: [
+			(arguments ((string) @test.name . (arrow_function)))
+			(arguments ((string) @test.name . (function)))
+		]
+	)
 ) @test.definition
 
 ;; BDD describe - nested
