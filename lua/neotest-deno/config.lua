@@ -20,4 +20,8 @@ M.get_dap_adapter = function()
 	return 'deno'
 end
 
+M.get_use_lsp_testing = function()
+	return true  -- Default to using LSP testing interface
+end
+
 return M

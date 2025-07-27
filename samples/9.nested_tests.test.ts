@@ -1,4 +1,4 @@
-import { expect } from "@std/expect";
+import { expect } from "https://deno.land/std@0.208.0/expect/mod.ts";
 
 Deno.test("Top-level test", async (t) => {
     await t.step("First nested test", () => {

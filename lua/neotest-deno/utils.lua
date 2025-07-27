@@ -21,4 +21,18 @@ M.get_test_name = function(output_line)
 	return test_name
 end
 
+-- Extract test name from result line, handling nested indentation
+M.get_test_name_from_result = function(output_line)
+	-- Match test names with potential indentation (for nested steps)
+	local test_name = string.match(output_line, '^%s*(.-)%s%.%.%.%s')
+	if test_name and test_name ~= "" then
+		-- Add quotes if the test name contains spaces
+		if string.match(test_name, ' ') then
+			test_name = '"' .. test_name .. '"'
+		end
+		return test_name
+	end
+	return nil
+end
+
 return M
